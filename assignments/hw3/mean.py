@@ -1,6 +1,6 @@
 """
 Name: Steve Ford
-interest.py
+mean.py
 
 Certificate of Authenticity:
 I certify that this assignment is entirely my own work.
