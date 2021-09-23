@@ -1,9 +1,10 @@
 """
-Name: <your name goes here – first and last>
-<ProgramName>.py
+Name: Steve Ford
+Lab4.py
 """
 
 from graphics import *
+import math
 
 
 def squares():
@@ -30,11 +31,11 @@ def squares():
 
     # create a space to instruct user
     inst_pt = Point(width / 2, height - 10)
-    instructions = Text(inst_pt, "Click to move circle")
+    instructions = Text(inst_pt, "Click to move a square")
     instructions.draw(win)
 
     # builds a circle
-    shape = Circle(Point(50, 50), 20)
+    shape = Rectangle(Point(50, 50), Point(70, 70))
     shape.setOutline("red")
     shape.setFill("red")
     shape.draw(win)
@@ -42,14 +43,14 @@ def squares():
     # allows the user to click multiple times to move the circle
     for i in range(num_clicks):
         p = win.getMouse()
-        c = shape.getCenter()  # center of circle
+        shape = Rectangle(Point(p.getX() - 10, p.getY() - 10), Point(p.getX() + 10, p.getY() + 10))
+        shape.setOutline("red")
+        shape.setFill("red")
+        shape.draw(win)
 
-        # move amount is distance from center of circle to the
-        # point where the user clicked
-        dx = p.getX() - c.getX()
-        dy = p.getY() - c.getY()
-        shape.move(dx, dy)
-
+    instructions.undraw()
+    instructions.setText("Click to close")
+    instructions.draw(win)
     win.getMouse()
     win.close()
 
@@ -62,14 +63,96 @@ def rectangle():
          Print the perimeter and area of the rectangle.
     Formulas: area = (length)(width)   and    perimeter = 2(length+width)
     """
-    pass
+    height = 400
+    width = 400
+    win = GraphWin("Rectangle", width, height)
+    p1 = win.getMouse()
+    p2 = win.getMouse()
+    r = Rectangle(p1, p2)
+    r.draw(win)
+    text_anchor = Point(width / 2, height - 10)
+    text_anchor2 = Point(width / 2, height - 30)
+    text_anchor3 = Point(width / 2, height - 50)
+
+    width = abs(p1.getX() - p2.getX())
+    height = abs(p1.getY() - p2.getY())
+    rect_perimeter = Text(text_anchor, "Perimeter of rectangle is: " + str(width*2 + height*2))
+    rect_perimeter.draw(win)
+    rect_area = Text(text_anchor2, "Area of Rectangle is: " + str(width*height))
+    rect_area.draw(win)
+    instructions = Text(text_anchor3, "Click to close window")
+    instructions.draw(win)
+
+    win.getMouse()
+    win.close()
+
+
+def circle():
+    # setting up window
+    width = 400
+    height = 400
+    win = GraphWin("Circle", width, height)
+
+    # setting up UI
+    text_anchor = Point(width/2, height - 10)
+    instructions = Text(text_anchor, "Click for circle center")
+    instructions.draw(win)
+
+    # user input
+    circle_center = win.getMouse()
+
+    # UI cycled
+    instructions.undraw()
+    instructions = Text(text_anchor, "Click for circle radius")
+    instructions.draw(win)
+
+    # user input
+    p_radial = win.getMouse()
+
+    # assignment for convenience
+    center_x = circle_center.getX()
+    center_y = circle_center.getY()
+    point_x = p_radial.getX()
+    point_y = p_radial.getY()
+
+    # computation
+    radius = ((center_x - point_x)**2 + (center_y - point_y)**2)**(1/2)
+    user_circle = Circle(circle_center, radius)
+    user_circle.draw(win)
+
+    # UI cycled
+    instructions.undraw()
+    instructions = Text(text_anchor, "The radius is: " + str(round(radius, 3)) + "...Click to close the window!")
+    instructions.draw(win)
+
+    win.getMouse()
+    win.close()
+
+
+def pi2():
+    n = int(input("How many refinements will be made? "))
+
+    accumulator = 0
+    for i in range(0, n):
+        sign = (i % 2)
+        sign = (sign * 2) - 1
+        sign = sign * (-1)
+        denominator = i * 2 + 1
+
+        fraction = 4/denominator
+
+        accumulator = accumulator + (sign * fraction)
+
+    print(accumulator)
+    accuracy = math.pi - accumulator
+    print("Calculation is " + str(accuracy) + " away from Pi")
 
 
 def main():
     squares()
-    # rectangle()
-    # circle()
-    # pi2()
+    rectangle()
+    circle()
+    pi2()
 
 
 main()
