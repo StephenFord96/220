@@ -1,6 +1,6 @@
 """
 Name: Steve Ford
-mean.py
+traffic.py
 
 Certificate of Authenticity:
 I certify that this assignment is entirely my own work.
