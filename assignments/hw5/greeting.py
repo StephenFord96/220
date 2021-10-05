@@ -7,130 +7,112 @@ I certify that this assignment is entirely my own work.
 """
 
 import math
-from graphics import *
 import time
+from graphics import (Point, Polygon, GraphWin, Text)
 
 win = GraphWin("Valentines Card", 700, 700)
+win.setBackground("Light Grey")
+
+first_message = Text(Point(350, 50), "Happy Valentines Day!")
+first_message.setFill("Magenta")
+first_message.setSize(18)
+first_message.draw(win)
+
+RADIUS = 1600
+LOWER_BOUND = int(RADIUS / 4 * -1)
+UPPER_BOUND = int(RADIUS / 4)
+
+X_ORIGIN = 350
+Y_ORIGIN = 300
+
+TAPER_RATING = 5
+TAPER_RATING_2 = 4
+
+VALLEY_RATING = -1.5
+PEAK_RATING = 0.75
+
+FIRST_HEART_STRUCTURE = []
+SECOND_HEART_STRUCTURE = []
+
+ARROW_SIZE_GENERAL = 1
+
+FEATHER_RATING = 10 * ARROW_SIZE_GENERAL
+ARROW_LENGTH = 45 * ARROW_SIZE_GENERAL
+FEATHER_SPACING = 3 * ARROW_SIZE_GENERAL
+ARROW_BLUEPRINT = [Point(0, 0), Point(ARROW_LENGTH, ARROW_LENGTH)]
 
 
 def main():
 
-    radius = 1600
-    lower_bound = int(radius/4 * -1)
-    upper_bound = int(radius/4)
-
-    x_origin = 350
-    y_origin = 300
-
-    taper_rating = 5
-    taper_rating_2 = 4
-
-    valley_rating = -1.5
-    peak_rating = 0.75
-
-    first_heart_structure = []
-    second_heart_structure = []
-
-    """
-    ~~~~arrow feather algorithm~~~~
-    
-    shaft = graph x value which intercepts shaft, default 5
-    feather length = amount to be subtracted from shaft, default 5
-    
-    new point is based off of shaft since arrow is x=y
-    
-    use i in loop to modulate 2 giving 0 1 0 1 0 1 pattern after subtracting 1
-    offset sequence for y and x so one is being negated at a time
-    
-    each feather length x and y is multiplied by either 1 or 0 
-    in body of loop subtract feather length from shaft.x shaft.y
-    
-    new point is appended to arrow list
-    add feather length back to shaft to reset for other side of arrow
-    
-    this loop is reset and rerun but with a different shaft rating which--
-    --is pulled from an outer loop's i
-    
-    
-    """
-
-    arrow_size_general = 1
-
-    feather_rating = 10 * arrow_size_general
-    arrow_length = 45 * arrow_size_general
-    feather_spacing = 3 * arrow_size_general
-    arrow_blueprint = []
-    arrow_blueprint.append(Point(0, 0))
-    arrow_blueprint.append(Point(arrow_length, arrow_length))
-
-    for s in range(int(feather_rating/2), int(arrow_length/3), int(feather_spacing)):
+    for shaft_pos in range(int(FEATHER_RATING / 2), int(ARROW_LENGTH / 3), int(FEATHER_SPACING)):
         for i in range(2):
-            position = Point(s, s)
-            arrow_blueprint.append(position)
-            mod_x = i % 2
-            mod_y = (i-1) % 2
-            feather_y = feather_rating * mod_y
-            feather_x = feather_rating * mod_x
+            position = Point(shaft_pos, shaft_pos)
+            ARROW_BLUEPRINT.append(position)
+            feather_y = FEATHER_RATING * ((i-1) % 2)
+            feather_x = FEATHER_RATING * (i % 2)
             arrow_point = Point(position.getX() - feather_x, position.getY() - feather_y)
-            arrow_blueprint.append(arrow_point)
-            arrow_blueprint.append(position)
+            ARROW_BLUEPRINT.append(arrow_point)
+            ARROW_BLUEPRINT.append(position)
 
-    arrow = Polygon(arrow_blueprint)
-    arrow.setOutline("grey")
-    arrow.draw(win)
+    arrow = Polygon(ARROW_BLUEPRINT)
 
     # start of base heart construction
     # bottom half of heart
-    for i in range(upper_bound, lower_bound, -1):
+    for i in range(UPPER_BOUND, LOWER_BOUND, -1):
         x_input = i/10
-        y_output = (valley_rating * (math.sqrt(radius - (x_input**2))) + (math.sqrt(abs(x_input))) * (taper_rating + 1)) * (-1)
 
-        new_point = Point(x_input + x_origin, y_output + y_origin)
-        # new_point.draw(win)
-        first_heart_structure.append(new_point)
+        y_output = VALLEY_RATING * (math.sqrt(RADIUS - (x_input ** 2)))
+        y_output = y_output + (math.sqrt(abs(x_input))) * (TAPER_RATING + 1)
+        y_output = y_output * (-1)
+
+        FIRST_HEART_STRUCTURE.append(Point(x_input + X_ORIGIN, y_output + Y_ORIGIN))
 
     print("test bottom half")
 
     # top half od heart
-    for i in range(lower_bound, upper_bound):
+    for i in range(LOWER_BOUND, UPPER_BOUND):
         x_input = i/10
-        y_output = (peak_rating * (math.sqrt(radius - (x_input**2))) + (math.sqrt(abs(x_input)) * taper_rating)) * (-1)
 
-        new_point = Point(x_input + x_origin, y_output + y_origin)
-        # new_point.draw(win)
-        first_heart_structure.append(new_point)
+        y_output = PEAK_RATING * (math.sqrt(RADIUS - (x_input ** 2)))
+        y_output = y_output + (math.sqrt(abs(x_input))) * TAPER_RATING
+        y_output = y_output * (-1)
+
+        FIRST_HEART_STRUCTURE.append(Point(x_input + X_ORIGIN, y_output + Y_ORIGIN))
 
     print("test top half")
 
     # start of ghost heart construction
     # bottom half of heart
-    for i in range(upper_bound, lower_bound, -1):
+    for i in range(UPPER_BOUND, LOWER_BOUND, -1):
         x_input = i/10
-        y_output = (valley_rating * (math.sqrt(radius - (x_input**2))) + (math.sqrt(abs(x_input))) * (taper_rating_2 + 1)) * (-1)
 
-        new_point = Point(x_input + x_origin, y_output + y_origin)
-        second_heart_structure.append(new_point)
+        y_output = VALLEY_RATING * (math.sqrt(RADIUS - (x_input ** 2)))
+        y_output = y_output + (math.sqrt(abs(x_input))) * (TAPER_RATING_2 + 1)
+        y_output = y_output * (-1)
+
+        SECOND_HEART_STRUCTURE.append(Point(x_input + X_ORIGIN, y_output + Y_ORIGIN))
 
     # top half of heart
-    for i in range(lower_bound, upper_bound):
+    for i in range(LOWER_BOUND, UPPER_BOUND):
         x_input = i/10
-        y_output = ((peak_rating + 0.10) * (math.sqrt(radius - (x_input**2))) + (math.sqrt(abs(x_input)) * taper_rating_2)) * (-1)
 
-        new_point = Point(x_input + x_origin, y_output + y_origin)
-        second_heart_structure.append(new_point)
+        y_output = (PEAK_RATING + 0.10) * (math.sqrt(RADIUS - (x_input ** 2)))
+        y_output = y_output + (math.sqrt(abs(x_input))) * TAPER_RATING_2
+        y_output = y_output * (-1)
+
+        SECOND_HEART_STRUCTURE.append(Point(x_input + X_ORIGIN, y_output + Y_ORIGIN))
 
     # shape assignments
-    heart_ghost = Polygon(second_heart_structure)
+    heart_ghost = Polygon(SECOND_HEART_STRUCTURE)
     heart_ghost.setFill("red")
 
-    heart = Polygon(first_heart_structure)
+    heart = Polygon(FIRST_HEART_STRUCTURE)
     heart.setFill("pink")
     heart.draw(win)
 
     # heart throbbing & action loop!
-    for _ in range(16):
+    for _ in range(7):
         time.sleep(.25)
-        arrow.move(2, 3)
         heart.undraw()
         heart_ghost.draw(win)
         heart_ghost.move(2, 3)
@@ -138,10 +120,24 @@ def main():
         heart_ghost.undraw()
         heart_ghost.move(-2, -3)
         heart.draw(win)
-        arrow.move(15, 12)
+
+    arrow.draw(win)
+    for _ in range(88):
+        arrow.move(3, 2.5)
+        time.sleep(0.015)
+
+    finish()
 
 
-    # closing section
+def finish():
+
+    first_message.undraw()
+
+    instructions = Text(Point(350, 650), "Click anywhere to close the window!")
+    instructions.setFill("Magenta")
+    instructions.setSize(18)
+    instructions.draw(win)
+
     win.getMouse()
     win.close()
 
