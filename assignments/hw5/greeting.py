@@ -4,7 +4,70 @@ greeting.py
 
 Certificate of Authenticity:
 I certify that this assignment is entirely my own work.
+
+
+~~~Pseudo Code~~~
+Define Problem: we want a little animation to play of a heart being struck
+by an arrow with some flavor text involved. Animation should be spiced up
+
+I/O's: no inputs; program is hard coded animation
+       outputs: graphical animation, described above
+       outputs continued: I want a really smooth heart that beats, no gimmicks
+
+Design: Find an easy to modify equation of a heart that will allow me
+        re-write it in a way that it is expressed as y = x + some math
+        rather than fixed radius = x + y
+
+        replace coefficients to allow me to choose a nice looking heart from
+        testing and generate two kinds of heart to cycle between, giving a
+        "beating" visual
+
+        I will have to actually separate the equation of the heart into
+        two equations (total of 4 because its two hearts) as the equation
+        of a "semi heart", I will do this in the same fashion as my pre-
+        -calc class taught me to find the equation of a semi circle, as
+        both are conical equations
+
+        I will need to run many points (use a loop) through the semi-
+        heart equation to receive enough output points to draw smooth
+        curves, peaks, and valleys of the heart
+
+        I will assemble all the output points into a list, then each
+        semi heart lists will come together as one big list to feed
+        into the graphic.polygon() parameter
+
+Maintain: I decided the heart beat looks better if the heart slightly moves
+          between it's two render options and also changes in color slightly
+
+          Instead of typing out each point in the polygon of an arrow in a
+          long boring wall of text I wrote a loop that automates the process
+          and even allows for me to edit the scaling and certain features of
+          the arrow, not user friendly, its all hard coded constants
+
+          Arrow algo creeps up the shaft of the arrow which has a slope of
+          y = x, approaches from 0,0 in a positive direction on both axis
+          so if I take the point (x,x) and subtract a value(feather length)
+          of just one of the values of the coordinate pair the resulting
+          point is where the feather would extend to from the shaft (x,x)
+          the loop reverts this and then does the opposite thanks to some
+          modular arithmetic
+
+          I played with the color of the background, arrow, and, text to
+          make it seem more appealing
+
+          I cut things around and made some variable global constants, even
+          added a new function to close the program in order to fit the linter's
+          requirements on the # of statements and variables
+
+Note to the reader: the above pseudo code is a recreation of what I initially had;
+                    which was messy and created issues with the test module due
+                    to my own user error.
+
+Maintain Cont: with what I now know from chapter 6 I definitely could create
+               a new function for the semi circle math which re-occurs 4 times
+
 """
+
 
 import math
 import time
