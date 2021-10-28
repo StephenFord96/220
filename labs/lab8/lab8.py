@@ -77,12 +77,12 @@ def send_uncrackable_message(file, friend, key_location):
 
 
 def main():
-    # number_words("Walrus.txt", "Walrus_Out.txt")
+    number_words("Walrus.txt", "Walrus_Out.txt")
     # hourly_wage("hourly_wages.txt", "wages_spreadsheet.txt")
     # print(calc_check_sum("0072946520"))
     # send_message("message.txt", "Francis_The_Friend")
     # send_safe_message("message.txt", "Francis_The_Friend", 3)
-    send_uncrackable_message("message.txt", "Francis_The_Friend", "pad.txt")
+    # send_uncrackable_message("message.txt", "Francis_The_Friend", "pad.txt")
 
 
 main()
