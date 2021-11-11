@@ -134,7 +134,6 @@ def play_game():
 
 
 def main():
-    # add other function calls here
     play_game()
 
 
